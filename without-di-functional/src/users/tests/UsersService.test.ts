@@ -3,10 +3,15 @@ import * as commentsService from "../../comments/CommentsService";
 import { client } from "../UsersClient";
 import { logger } from "../../logger/logger";
 
-const generateUser = (id: number) => ({
+const generateUser = (id: string) => ({
   id,
   name: `name-${id}`,
 });
+
+const uuid = "123456"
+jest.mock('uuid', () => ({
+  v4: () => uuid
+}))
 
 describe("UsersService", () => {
   let mockGet: jest.SpyInstance;
@@ -24,7 +29,7 @@ describe("UsersService", () => {
   });
 
   it("fetches the users", async () => {
-    const mockResponse = [generateUser(1), generateUser(2), generateUser(3)];
+    const mockResponse = [generateUser("1"), generateUser("2"), generateUser("3")];
 
     mockGet.mockImplementation(() => Promise.resolve({ data: mockResponse }));
 
@@ -35,7 +40,7 @@ describe("UsersService", () => {
   });
 
   it("fetches a user", async () => {
-    const mockUserResponse = generateUser(1);
+    const mockUserResponse = generateUser(uuid);
     const mockCommentResponse = [{ id: "1", postId: "1" }];
 
     mockGet.mockImplementation(() =>

@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import * as usersService from "./UsersService";
+import { User } from "./User";
 
 export const list = async (req: Request, res: Response) => {
-  const users = await usersService.list();
+  const users: User[] = await usersService.list();
   res.json(users);
 };
 

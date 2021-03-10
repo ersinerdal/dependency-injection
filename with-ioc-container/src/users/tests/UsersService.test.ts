@@ -2,22 +2,24 @@ import { UsersService } from "../UsersService";
 import { TYPES } from "../../constants";
 import { Container } from "inversify";
 
-const generateUser = (id: number) => ({
+const generateUser = (id: string) => ({
   id,
   name: `name-${id}`,
 });
 
 describe("UsersService", () => {
   let usersService: UsersService;
+  const uuid = "123456";
   const infoSpy = jest.fn();
   const getSpy = jest.fn();
-  const listByUserIdSpy = jest.fn();
+  const listBySpy = jest.fn();
 
   beforeEach(() => {
     const container = new Container();
     container.bind(TYPES.LOGGER).toConstantValue({ info: infoSpy });
+    container.bind(TYPES.UUID).toConstantValue(()=> uuid);
     container.bind(TYPES.USERS_CLIENT).toConstantValue({ get: getSpy });
-    container.bind(TYPES.COMMENTS_SERVICE).toConstantValue({ listByUserId: listByUserIdSpy });
+    container.bind(TYPES.COMMENTS_SERVICE).toConstantValue({ listByUserId: listBySpy });
     container.bind(TYPES.USERS_SERVICE).to(UsersService);
     usersService = container.get(TYPES.USERS_SERVICE);
   });
@@ -27,7 +29,7 @@ describe("UsersService", () => {
   });
 
   it("fetches the users", async () => {
-    const mockResponse = [generateUser(1), generateUser(2), generateUser(3)];
+    const mockResponse = [generateUser("1"), generateUser("2"), generateUser("3")];
 
     getSpy.mockReturnValue({ data: mockResponse });
 
@@ -38,11 +40,11 @@ describe("UsersService", () => {
   });
 
   it("fetches a user", async () => {
-    const mockUserResponse = generateUser(1);
+    const mockUserResponse = generateUser(uuid);
     const mockCommentResponse = [{ id: "1", postId: "1" }];
 
     getSpy.mockReturnValue({ data: mockUserResponse });
-    listByUserIdSpy.mockReturnValue(mockCommentResponse);
+    listBySpy.mockReturnValue(mockCommentResponse);
 
     const user = await usersService.getById("1");
 
