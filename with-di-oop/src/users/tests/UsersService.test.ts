@@ -1,27 +1,23 @@
 import { UsersService } from "../UsersService";
 
-const generateUser = (id: number) => ({
+const generateUser = (id: string) => ({
   id,
   name: `name-${id}`,
 });
 
 describe("UsersService", () => {
   let usersService: UsersService;
-  const mockClient = {
-    get: jest.fn(),
-  }
-  const mockLogger = {
-    info: jest.fn(),
-  };
-  const mockCommentsService = {
-    listByUserId: jest.fn(),
-  };
+  const mockClient = { get: jest.fn() }
+  const mockLogger = { info: jest.fn() };
+  const mockCommentsService = { listByUserId: jest.fn() };
+  const mockUuid = jest.fn()
 
   beforeEach(() => {
     usersService = new UsersService({
       commentsService: mockCommentsService,
       logger: mockLogger,
       client: mockClient,
+      uuid: mockUuid
     });
   });
 
@@ -30,7 +26,7 @@ describe("UsersService", () => {
   });
 
   it("fetches the users", async () => {
-    const mockResponse = [generateUser(1), generateUser(2), generateUser(3)];
+    const mockResponse = [generateUser("1"), generateUser("2"), generateUser("3")];
 
     mockClient.get.mockReturnValue({ data: mockResponse });
 
@@ -41,9 +37,11 @@ describe("UsersService", () => {
   });
 
   it("fetches a user", async () => {
-    const mockUserResponse = generateUser(1);
+    const uuid = "123456";
+    const mockUserResponse = generateUser(uuid);
     const mockCommentResponse = [{ id: "1", postId: "1" }];
 
+    mockUuid.mockReturnValue(uuid);
     mockClient.get.mockReturnValue({ data: mockUserResponse });
     mockCommentsService.listByUserId.mockReturnValue(mockCommentResponse);
 

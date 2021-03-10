@@ -5,11 +5,13 @@ export class UsersService {
   private commentsService: CommentsService;
   private logger;
   private client;
+  private uuid;
 
-  constructor({ commentsService, logger, client }) {
+  constructor({ commentsService, logger, client, uuid }) {
     this.commentsService = commentsService;
     this.logger = logger;
     this.client = client;
+    this.uuid = uuid;
   }
 
   async list() {
@@ -29,12 +31,12 @@ export class UsersService {
   async getById(userId: string) {
     try {
       const {
-        data: { id, name, username, email, phone },
+        data: { name, username, email, phone },
       } = await this.client.get(`users/${userId}`);
 
       const comments = await this.commentsService.listByUserId(userId);
 
-      return { id, name, username, email, phone, comments };
+      return { id: this.uuid(), name, username, email, phone, comments };
     } catch (e) {
       const message = `User (${userId}) does not exist`;
       this.logger.error(message);
