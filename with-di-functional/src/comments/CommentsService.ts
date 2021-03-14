@@ -3,7 +3,7 @@ import { Logger } from "winston";
 
 export interface CommentsDependencies {
   commentsClient: AxiosInstance;
-  logger: Logger;
+  logger: Pick<Logger, "error">;
 }
 
 export const listByUserId = (userId: string) => {

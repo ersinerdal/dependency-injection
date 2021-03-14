@@ -1,7 +1,5 @@
 import * as usersService from "../UsersService";
-import { Logger } from "winston";
-import { AxiosInstance } from "axios";
-import { UserDependencies, UsersDependencies } from "../UsersService";
+import { UserDependencies, UsersDependencies } from "../types";
 
 const generateUser = (id: number) => ({
   id,
@@ -10,15 +8,12 @@ const generateUser = (id: number) => ({
 
 describe("UsersService", () => {
   const mockGet = jest.fn();
-  const usersDependencies: UsersDependencies = {
-    usersClient: ({
-      get: mockGet,
-    } as Partial<AxiosInstance>) as AxiosInstance,
-    logger: ({
-      info: jest.fn(),
-    } as Partial<Logger>) as Logger,
-  };
   const mockListByUserId = jest.fn();
+
+  const usersDependencies: UsersDependencies = {
+    usersClient: { get: mockGet },
+    logger: { info: jest.fn() , error: jest.fn() }
+  };
   const userDependencies: UserDependencies = {
     ...usersDependencies,
     commentsService: {
