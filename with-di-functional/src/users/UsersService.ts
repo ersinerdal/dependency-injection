@@ -1,16 +1,5 @@
 import { User } from "./User";
-import { AxiosInstance } from "axios";
-import { Logger } from "winston";
-import * as commentsService from "../comments/CommentsService";
-
-export interface UsersDependencies {
-  usersClient: AxiosInstance;
-  logger: Logger;
-}
-
-export interface UserDependencies extends UsersDependencies {
-  commentsService: typeof commentsService;
-}
+import { UserDependencies, UsersDependencies } from "./types";
 
 export const list = () => {
   return async ({ usersClient, logger }: UsersDependencies) => {
