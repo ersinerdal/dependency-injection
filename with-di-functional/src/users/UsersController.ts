@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {UsersControllerDependencies,User} from "./types";
+import { UsersControllerDependencies, User } from "./types";
 
 export const usersController = ({
   logger,
@@ -7,22 +7,21 @@ export const usersController = ({
   commentsClient,
   usersService,
   usersClient,
-}:UsersControllerDependencies) => {
-
+}: UsersControllerDependencies) => {
   const service = usersService({
     usersClient,
     logger,
     commentsService,
-    commentsClient
+    commentsClient,
   });
 
   const list = async (req: Request, res: Response) => {
-    const users: User[] = await service.list()
+    const users: User[] = await service.list();
     res.json(users);
   };
 
   const getById = async (req: Request, res: Response) => {
-    const user = await service.getById(req.params.id)
+    const user = await service.getById(req.params.id);
     res.json(user);
   };
 

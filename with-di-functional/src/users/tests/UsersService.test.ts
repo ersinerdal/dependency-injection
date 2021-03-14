@@ -1,4 +1,4 @@
-import {usersService} from "../UsersService";
+import { usersService } from "../UsersService";
 import { UsersServiceDependencies } from "../types";
 
 const generateUser = (id: number) => ({
@@ -14,7 +14,7 @@ describe("UsersService", () => {
     usersClient: { get: mockUsersGet },
     commentsClient: { get: mockCommentsGet },
     logger: { info: jest.fn(), error: jest.fn() },
-    commentsService: () => ({ listByUserId: mockListByUserId })
+    commentsService: () => ({ listByUserId: mockListByUserId }),
   };
 
   afterEach(() => {

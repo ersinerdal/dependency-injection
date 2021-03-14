@@ -1,4 +1,4 @@
-import { UsersServiceDependencies,User } from "./types";
+import { UsersServiceDependencies, User } from "./types";
 
 export const usersService = ({
   usersClient,
@@ -6,7 +6,6 @@ export const usersService = ({
   commentsService,
   commentsClient,
 }: UsersServiceDependencies) => {
-
   const list = async () => {
     try {
       const { data } = await usersClient.get("users");

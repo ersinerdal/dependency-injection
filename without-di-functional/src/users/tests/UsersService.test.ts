@@ -1,6 +1,6 @@
 import * as userService from "../UsersService";
 import * as commentsService from "../../comments/CommentsService";
-import { client } from "../UsersClient";
+import { usersClient } from "../UsersClient";
 import { logger } from "../../logger/logger";
 
 const generateUser = (id: string) => ({
@@ -20,7 +20,7 @@ describe("UsersService", () => {
 
   beforeEach(() => {
     mockCommentsService = jest.spyOn(commentsService, "listByUserId");
-    mockGet = jest.spyOn(client, "get");
+    mockGet = jest.spyOn(usersClient, "get");
     mockLoggerInfo = jest.spyOn(logger, "info");
   });
 

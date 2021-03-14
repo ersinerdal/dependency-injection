@@ -1,4 +1,4 @@
-import { client } from "./UsersClient";
+import { usersClient } from "./UsersClient";
 import { logger } from "../logger/logger";
 import { User, UserWithComments } from "./User";
 import { Comment } from "../comments/Comment";
@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export const list = async (): Promise<User[]> => {
   try {
-    const { data } = await client.get("users");
+    const { data } = await usersClient.get("users");
     logger.info(`Users are fetched`);
 
     return data.map((user: User) => {
@@ -24,7 +24,7 @@ export const getById = async (userId: string): Promise<UserWithComments> => {
   try {
     const {
       data: { name, username, email, phone },
-    } = await client.get(`users/${userId}`);
+    } = await usersClient.get(`users/${userId}`);
 
     const comments: Comment[] = await commentsService.listByUserId(userId);
 
