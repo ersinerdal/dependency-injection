@@ -1,11 +1,9 @@
 import { interfaces } from "inversify";
 import { TYPES } from "../constants";
-import { User, UserWithComments } from "./types/User";
-import { Comment } from "../comments/types/Comment";
+import { User, UserWithComments, UsersService } from "./types";
+import { Comment, CommentsService  } from "../comments/types";
 import { Logger } from "../logger";
 import { Client } from "./UsersClient";
-import { CommentsService } from "../../../with-di-oop/src/comments/CommentsService";
-import { UsersService } from "./types/UsersService";
 
 export default ({ container }: interfaces.Context): UsersService => {
   const logger: Logger = container.get(TYPES.LOGGER);

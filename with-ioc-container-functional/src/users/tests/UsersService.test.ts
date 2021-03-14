@@ -1,5 +1,5 @@
 import UsersServiceImp from "../UsersService";
-import {UsersService} from "../types/UsersService";
+import { UsersService } from "../types";
 import { TYPES } from "../../constants";
 import { Container } from "inversify";
 
