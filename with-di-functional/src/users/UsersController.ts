@@ -7,14 +7,14 @@ export const usersController = ({
   commentsClient,
   usersService,
   usersClient,
-  uuidv4
+  uuidv4,
 }: UsersControllerDependencies) => {
   const service = usersService({
     usersClient,
     logger,
     commentsService,
     commentsClient,
-    uuidv4
+    uuidv4,
   });
 
   const list = async (req: Request, res: Response) => {

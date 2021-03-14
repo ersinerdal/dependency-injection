@@ -5,7 +5,7 @@ export const usersService = ({
   logger,
   commentsService,
   commentsClient,
-  uuidv4
+  uuidv4,
 }: UsersServiceDependencies) => {
   const list = async () => {
     try {

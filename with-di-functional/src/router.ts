@@ -15,7 +15,7 @@ const _usersController = usersController({
   commentsService,
   commentsClient,
   usersService,
-  uuidv4
+  uuidv4,
 });
 
 router.route("/users").get(_usersController.list);

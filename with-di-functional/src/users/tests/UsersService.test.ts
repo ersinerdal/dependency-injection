@@ -16,7 +16,7 @@ describe("UsersService", () => {
     commentsClient: { get: mockCommentsGet },
     logger: { info: jest.fn(), error: jest.fn() },
     commentsService: () => ({ listByUserId: mockListByUserId }),
-    uuidv4: () => mockUuid
+    uuidv4: () => mockUuid,
   };
 
   afterEach(() => {
@@ -24,7 +24,11 @@ describe("UsersService", () => {
   });
 
   it("fetches the users", async () => {
-    const mockResponse = [generateUser("1"), generateUser("2"), generateUser("3")];
+    const mockResponse = [
+      generateUser("1"),
+      generateUser("2"),
+      generateUser("3"),
+    ];
 
     mockUsersGet.mockReturnValue({ data: mockResponse });
 
