@@ -1,21 +1,16 @@
-import { AxiosInstance } from "axios";
-import { Logger } from "winston";
+import {CommentsServiceDependencies} from "./types";
 
-export interface CommentsDependencies {
-  commentsClient: AxiosInstance;
-  logger: Pick<Logger, "error">;
-}
-
-export const listByUserId = (userId: string) => {
-  return async ({ commentsClient, logger }: CommentsDependencies) => {
-    try {
-      const { data } = await commentsClient.get("comments", {
-        params: { postId: userId },
-      });
-      return data;
-    } catch (e) {
-      logger.error("Comments couldn't be fetched ccc");
-      return [];
-    }
-  };
+export const commentsService = ({ commentsClient, logger }: CommentsServiceDependencies) => {
+  const listByUserId = async (userId: string) => {
+      try {
+        const { data } = await commentsClient.get("comments", {
+          params: { postId: userId },
+        });
+        return data;
+      } catch (e) {
+        logger.error("Comments couldn't be fetched ccc");
+        return [];
+      }
+    };
+  return { listByUserId };
 };

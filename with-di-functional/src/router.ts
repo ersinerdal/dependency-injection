@@ -1,27 +1,22 @@
-import { Request, Response } from "express";
 import { Router } from "express";
-import * as usersService from "./users/UsersService";
-import * as commentsService from "./comments/CommentsService";
+import { usersController } from "./users/UsersController";
+import { usersService } from "./users/UsersService";
+import { commentsService } from "./comments/CommentsService";
 import { usersClient } from "./users/UsersClient";
 import { commentsClient } from "./comments/CommentsClient";
 import { logger } from "./logger/logger";
 
 const router = Router();
 
-router.route("/users").get(async (req: Request, res: Response) => {
-  const users = await usersService.list()({ usersClient, logger });
-  res.json(users);
+const _usersController = usersController({
+  usersClient,
+  logger,
+  commentsService,
+  commentsClient,
+  usersService,
 });
 
-router
-  .route("/users/:id")
-  .get(async (req: Request<{ id: string }>, res: Response) => {
-    const user = await usersService.getById(req.params.id)({
-      usersClient,
-      logger,
-      commentsService,
-    })(commentsClient);
-    res.json(user);
-  });
+router.route("/users").get(_usersController.list);
+router.route("/users/:id").get(_usersController.getById);
 
 export default router;

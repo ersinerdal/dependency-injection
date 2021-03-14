@@ -1,8 +1,13 @@
-import { User } from "./User";
-import { UserDependencies, UsersDependencies } from "./types";
+import { UsersServiceDependencies,User } from "./types";
 
-export const list = () => {
-  return async ({ usersClient, logger }: UsersDependencies) => {
+export const usersService = ({
+  usersClient,
+  logger,
+  commentsService,
+  commentsClient,
+}: UsersServiceDependencies) => {
+
+  const list = async () => {
     try {
       const { data } = await usersClient.get("users");
       logger.info(`Users are fetched`);
@@ -15,27 +20,25 @@ export const list = () => {
       logger.error("Users couldn't be fetched");
     }
   };
-};
 
-export const getById = (userId: string) => {
-  return ({ usersClient, logger, commentsService }: UserDependencies) => {
-    return async (commentsClient) => {
-      try {
-        const {
-          data: { id, name, username, email, phone },
-        } = await usersClient.get(`users/${userId}`);
+  const getById = async (userId: string) => {
+    try {
+      const {
+        data: { id, name, username, email, phone },
+      } = await usersClient.get(`users/${userId}`);
 
-        const comments = await commentsService.listByUserId(userId)({
-          commentsClient,
-          logger,
-        });
+      const comments = await commentsService({
+        commentsClient,
+        logger,
+      }).listByUserId(userId);
 
-        return { id, name, username, email, phone, comments };
-      } catch (e) {
-        const message = `User (${userId}) does not exist`;
-        logger.error(message);
-        return message;
-      }
-    };
+      return { id, name, username, email, phone, comments };
+    } catch (e) {
+      const message = `User (${userId}) does not exist`;
+      logger.error(message);
+      return message;
+    }
   };
+
+  return { list, getById };
 };

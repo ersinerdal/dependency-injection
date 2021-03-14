@@ -1,5 +1,5 @@
-import * as usersService from "../UsersService";
-import { UserDependencies, UsersDependencies } from "../types";
+import {usersService} from "../UsersService";
+import { UsersServiceDependencies } from "../types";
 
 const generateUser = (id: number) => ({
   id,
@@ -7,18 +7,14 @@ const generateUser = (id: number) => ({
 });
 
 describe("UsersService", () => {
-  const mockGet = jest.fn();
+  const mockUsersGet = jest.fn();
+  const mockCommentsGet = jest.fn();
   const mockListByUserId = jest.fn();
-
-  const usersDependencies: UsersDependencies = {
-    usersClient: { get: mockGet },
-    logger: { info: jest.fn() , error: jest.fn() }
-  };
-  const userDependencies: UserDependencies = {
-    ...usersDependencies,
-    commentsService: {
-      listByUserId: () => mockListByUserId,
-    },
+  const usersServiceDependencies: UsersServiceDependencies = {
+    usersClient: { get: mockUsersGet },
+    commentsClient: { get: mockCommentsGet },
+    logger: { info: jest.fn(), error: jest.fn() },
+    commentsService: () => ({ listByUserId: mockListByUserId })
   };
 
   afterEach(() => {
@@ -28,12 +24,12 @@ describe("UsersService", () => {
   it("fetches the users", async () => {
     const mockResponse = [generateUser(1), generateUser(2), generateUser(3)];
 
-    mockGet.mockReturnValue({ data: mockResponse });
+    mockUsersGet.mockReturnValue({ data: mockResponse });
 
-    const userList = await usersService.list()(usersDependencies);
+    const userList = await usersService(usersServiceDependencies).list();
 
     expect(userList).toEqual(mockResponse);
-    expect(usersDependencies.logger.info).toHaveBeenCalledWith(
+    expect(usersServiceDependencies.logger.info).toHaveBeenCalledWith(
       "Users are fetched"
     );
   });
@@ -42,10 +38,10 @@ describe("UsersService", () => {
     const mockUserResponse = generateUser(1);
     const mockCommentResponse = [{ id: "1", postId: "1" }];
 
-    mockGet.mockReturnValue({ data: mockUserResponse });
+    mockUsersGet.mockReturnValue({ data: mockUserResponse });
     mockListByUserId.mockReturnValue(mockCommentResponse);
 
-    const user = await usersService.getById("1")(userDependencies)(jest.fn());
+    const user = await usersService(usersServiceDependencies).getById("1");
 
     expect(user).toEqual({
       ...mockUserResponse,

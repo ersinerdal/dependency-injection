@@ -9,5 +9,7 @@ app.use(bodyParser.json());
 app.use(router);
 
 app.listen(3001, () => {
-  console.log("The application (with-di-functional)  is listening on port 3001!");
+  console.log(
+    "The application (with-di-functional)  is listening on port 3001!"
+  );
 });
