@@ -1,5 +1,4 @@
 import { usersService } from "../UsersService";
-import { UsersServiceDependencies } from "../types";
 
 const generateUser = (id: string) => ({
   id,
@@ -11,7 +10,7 @@ describe("UsersService", () => {
   const mockUsersGet = jest.fn();
   const mockCommentsGet = jest.fn();
   const mockListByUserId = jest.fn();
-  const usersServiceDependencies: UsersServiceDependencies = {
+  const usersServiceDependencies = {
     usersClient: { get: mockUsersGet },
     commentsClient: { get: mockCommentsGet },
     logger: { info: jest.fn(), error: jest.fn() },
@@ -21,23 +20,6 @@ describe("UsersService", () => {
 
   afterEach(() => {
     jest.resetAllMocks();
-  });
-
-  it("fetches the users", async () => {
-    const mockResponse = [
-      generateUser("1"),
-      generateUser("2"),
-      generateUser("3"),
-    ];
-
-    mockUsersGet.mockReturnValue({ data: mockResponse });
-
-    const userList = await usersService(usersServiceDependencies).list();
-
-    expect(userList).toEqual(mockResponse);
-    expect(usersServiceDependencies.logger.info).toHaveBeenCalledWith(
-      "Users are fetched"
-    );
   });
 
   it("fetches a user", async () => {

@@ -1,12 +1,9 @@
 import { UsersServiceDependencies, User } from "./types";
 
 export const usersService = ({
-  usersClient,
-  logger,
-  commentsService,
-  commentsClient,
-  uuidv4,
-}: UsersServiceDependencies) => {
+  usersClient, logger, commentsService, commentsClient, uuidv4
+  }: UsersServiceDependencies) => {
+
   const list = async () => {
     try {
       const { data } = await usersClient.get("users");
@@ -27,10 +24,8 @@ export const usersService = ({
         data: { name, username, email, phone },
       } = await usersClient.get(`users/${userId}`);
 
-      const comments = await commentsService({
-        commentsClient,
-        logger,
-      }).listByUserId(userId);
+      const comments = await commentsService({commentsClient, logger,})
+          .listByUserId(userId);
 
       return { id: uuidv4(), name, username, email, phone, comments };
     } catch (e) {
