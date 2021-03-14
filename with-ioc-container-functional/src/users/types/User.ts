@@ -1,4 +1,4 @@
-import { Comment } from "../comments/Comment";
+import { Comment } from "../../comments/types/Comment";
 
 export interface User {
   id: string;

@@ -14,7 +14,7 @@ export const listByUserId = (userId: string) => {
       });
       return data;
     } catch (e) {
-      logger.error("Comments couldn't be fetched");
+      logger.error("Comments couldn't be fetched ccc");
       return [];
     }
   };

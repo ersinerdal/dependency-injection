@@ -5,6 +5,7 @@ import { CommentsService } from "./comments/CommentsService";
 import { client as usersClient } from "./users/UsersClient";
 import { client as commentsClient } from "./comments/CommentsClient";
 import { logger } from "./logger/logger";
+import { v4 as uuidv4 } from "uuid";
 
 const router = Router();
 const commentsService = new CommentsService({
@@ -15,6 +16,7 @@ const usersService = new UsersService({
   commentsService,
   client: usersClient,
   logger,
+  uuid:uuidv4,
 });
 const usersController = new UsersController({ usersService });
 

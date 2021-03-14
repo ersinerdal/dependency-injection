@@ -5,7 +5,7 @@ export class UsersService {
   private commentsService: CommentsService;
   private logger;
   private client;
-  private uuid;
+  private readonly uuid;
 
   constructor({ commentsService, logger, client, uuid }) {
     this.commentsService = commentsService;

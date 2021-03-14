@@ -20,7 +20,7 @@ router
       usersClient,
       logger,
       commentsService,
-    })({ client: commentsClient, logger });
+    })(commentsClient);
     res.json(user);
   });
 

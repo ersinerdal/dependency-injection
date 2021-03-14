@@ -1,16 +1,15 @@
-import { User, UserWithComments } from "./User";
-import { CommentsService } from "../comments/CommentsService";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../constants";
-import { Logger } from "winston";
-import { AxiosInstance } from "axios";
-import { Comment } from "../../../without-di-functional/src/comments/Comment";
+import { User, UserWithComments } from "./types/User";
+import { Logger } from "../logger";
+import { Client } from "./UsersClient";
+import { CommentsService } from "../comments/CommentsService";
 
 @injectable()
 export class UsersService {
   @inject(TYPES.LOGGER) private readonly logger: Logger;
   @inject(TYPES.UUID) private readonly uuid: () => string;
-  @inject(TYPES.USERS_CLIENT) private readonly usersClient: AxiosInstance;
+  @inject(TYPES.USERS_CLIENT) private readonly usersClient: Client;
   @inject(TYPES.COMMENTS_SERVICE)
   private readonly commentsService: CommentsService;
 
@@ -35,7 +34,7 @@ export class UsersService {
         data: { name, username, email, phone },
       } = await this.usersClient.get(`users/${userId}`);
 
-      const comments: Comment[] = await this.commentsService.listByUserId(
+      const comments = await this.commentsService.listByUserId(
         userId
       );
 
@@ -43,7 +42,7 @@ export class UsersService {
     } catch (e) {
       const message = `User (${userId}) does not exist`;
       this.logger.error(message);
-      return {} as UserWithComments;
+      return null;
     }
   }
 }

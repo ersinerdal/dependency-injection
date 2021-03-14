@@ -15,6 +15,6 @@ server.setConfig((app) => {
 });
 
 let app = server.build();
-app.listen(3005, () => {
-  console.log("The application is listening on port 3005!");
+app.listen(3004, () => {
+  console.log("The application (with-ioc-container-oop) is listening on port 3004!");
 });
