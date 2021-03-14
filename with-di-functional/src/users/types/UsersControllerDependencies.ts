@@ -9,4 +9,5 @@ export interface UsersControllerDependencies {
   usersClient: Pick<AxiosInstance, "get">;
   commentsService: typeof commentsService;
   commentsClient: Pick<AxiosInstance, "get">;
+  uuidv4: ()=> string
 }

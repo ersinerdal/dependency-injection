@@ -1,12 +1,13 @@
 import { usersService } from "../UsersService";
 import { UsersServiceDependencies } from "../types";
 
-const generateUser = (id: number) => ({
+const generateUser = (id: string) => ({
   id,
   name: `name-${id}`,
 });
 
 describe("UsersService", () => {
+  const mockUuid = "123456";
   const mockUsersGet = jest.fn();
   const mockCommentsGet = jest.fn();
   const mockListByUserId = jest.fn();
@@ -15,6 +16,7 @@ describe("UsersService", () => {
     commentsClient: { get: mockCommentsGet },
     logger: { info: jest.fn(), error: jest.fn() },
     commentsService: () => ({ listByUserId: mockListByUserId }),
+    uuidv4: () => mockUuid
   };
 
   afterEach(() => {
@@ -22,7 +24,7 @@ describe("UsersService", () => {
   });
 
   it("fetches the users", async () => {
-    const mockResponse = [generateUser(1), generateUser(2), generateUser(3)];
+    const mockResponse = [generateUser("1"), generateUser("2"), generateUser("3")];
 
     mockUsersGet.mockReturnValue({ data: mockResponse });
 
@@ -35,7 +37,7 @@ describe("UsersService", () => {
   });
 
   it("fetches a user", async () => {
-    const mockUserResponse = generateUser(1);
+    const mockUserResponse = generateUser(mockUuid);
     const mockCommentResponse = [{ id: "1", postId: "1" }];
 
     mockUsersGet.mockReturnValue({ data: mockUserResponse });

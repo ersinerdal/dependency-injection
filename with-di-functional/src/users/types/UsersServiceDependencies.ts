@@ -7,4 +7,5 @@ export interface UsersServiceDependencies {
   commentsClient: Pick<AxiosInstance, "get">;
   logger: Pick<Logger, "error" | "info">;
   commentsService: typeof commentsService;
+  uuidv4: ()=> string
 }
