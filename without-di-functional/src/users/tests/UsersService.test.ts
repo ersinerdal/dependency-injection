@@ -28,6 +28,18 @@ describe("UsersService", () => {
     jest.clearAllMocks();
   });
 
+  it("fetches the users", async () => {
+    const mockResponse = [generateUser("1"), generateUser("2"), generateUser("3")];
+
+    mockGet.mockImplementation(() => Promise.resolve({ data: mockResponse }));
+
+    const userList = await userService.list();
+
+    expect(userList).toEqual(mockResponse);
+    expect(mockLoggerInfo).toHaveBeenCalledWith("Users are fetched");
+  });
+
+
   it("fetches a user", async () => {
     const mockUserResponse = generateUser(uuid);
     const mockCommentResponse = [{ id: "1", postId: "1" }];
