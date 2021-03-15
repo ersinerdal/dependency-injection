@@ -1,9 +1,7 @@
 import { Request, Response } from "express";
 import { interfaces } from "inversify";
-import { User } from "./types/User";
+import { User, UsersController, UsersService } from "./types";
 import { TYPES } from "../constants";
-import { UsersService } from "./types/UsersService";
-import {UsersController} from "./types/UsersController";
 
 export default ({ container }: interfaces.Context):UsersController => {
   const usersService: UsersService = container.get(TYPES.USERS_SERVICE);

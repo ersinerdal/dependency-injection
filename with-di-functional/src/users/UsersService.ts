@@ -1,9 +1,12 @@
-import { UsersServiceDependencies, User } from "./types";
+import { UsersServiceDependencies, User, UsersService } from "./types";
+import { UserWithComments } from "./types/User";
 
 export const usersService = ({
-  usersClient, logger, commentsService, commentsClient, uuidv4
-  }: UsersServiceDependencies) => {
-
+  commentsService,
+  usersClient,
+  logger,
+  uuidv4,
+}: UsersServiceDependencies): UsersService => {
   const list = async () => {
     try {
       const { data } = await usersClient.get("users");
@@ -24,14 +27,13 @@ export const usersService = ({
         data: { name, username, email, phone },
       } = await usersClient.get(`users/${userId}`);
 
-      const comments = await commentsService({commentsClient, logger,})
-          .listByUserId(userId);
+      const comments = await commentsService.listByUserId(userId);
 
       return { id: uuidv4(), name, username, email, phone, comments };
     } catch (e) {
       const message = `User (${userId}) does not exist`;
       logger.error(message);
-      return message;
+      return {} as UserWithComments;
     }
   };
 

@@ -1,9 +1,9 @@
-import { CommentsServiceDependencies } from "./types";
+import { CommentsServiceDependencies, CommentsService } from "./types";
 
 export const commentsService = ({
   commentsClient,
   logger,
-}: CommentsServiceDependencies) => {
+}: CommentsServiceDependencies): CommentsService => {
   const listByUserId = async (userId: string) => {
     try {
       const { data } = await commentsClient.get("comments", {
@@ -11,7 +11,7 @@ export const commentsService = ({
       });
       return data;
     } catch (e) {
-      logger.error("Comments couldn't be fetched ccc");
+      logger.error("Comments couldn't be fetched");
       return [];
     }
   };
