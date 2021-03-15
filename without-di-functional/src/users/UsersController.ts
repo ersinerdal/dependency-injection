@@ -7,7 +7,7 @@ export const list = async (req: Request, res: Response) => {
   res.json(users);
 };
 
-export const getById = async (req: Request<{ id: string }>, res: Response) => {
+export const getById = async (req: Request, res: Response) => {
   const user = await usersService.getById(req.params.id);
   res.json(user);
 };
