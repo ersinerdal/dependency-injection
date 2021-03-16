@@ -9,49 +9,33 @@ const generateUser = (id: string) => ({
 });
 
 describe("UsersService", () => {
-  let usersService: UsersService;
-  const uuid = "123456";
-  const infoSpy = jest.fn();
-  const getSpy = jest.fn();
-  const listBySpy = jest.fn();
 
-  beforeEach(() => {
+  const generateService =({uuid,user,comments }:any):UsersService=> {
     const container = new Container();
-    container.bind(TYPES.LOGGER).toConstantValue({ info: infoSpy });
+    container.bind(TYPES.LOGGER).toConstantValue({ info: ()=>{} });
     container.bind(TYPES.UUID).toConstantValue(()=> uuid);
-    container.bind(TYPES.USERS_CLIENT).toConstantValue({ get: getSpy });
-    container.bind(TYPES.COMMENTS_SERVICE).toConstantValue({ listByUserId: listBySpy });
+    container.bind(TYPES.USERS_CLIENT).toConstantValue({get: () => ({ data: user })});
+    container.bind(TYPES.COMMENTS_SERVICE).toConstantValue({ listByUserId: () => comments });
     container.bind(TYPES.USERS_SERVICE).toDynamicValue(UsersServiceImp);
-    usersService = container.get(TYPES.USERS_SERVICE);
-  });
-
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
-
-  it("fetches the users", async () => {
-    const mockResponse = [generateUser("1"), generateUser("2"), generateUser("3")];
-
-    getSpy.mockReturnValue({ data: mockResponse });
-
-    const userList = await usersService.list();
-
-    expect(userList).toEqual(mockResponse);
-    expect(infoSpy).toHaveBeenCalledWith("Users are fetched");
-  });
+    return  container.get(TYPES.USERS_SERVICE);
+  }
 
   it("fetches a user", async () => {
-    const mockUserResponse = generateUser(uuid);
-    const mockCommentResponse = [{ id: "1", postId: "1" }];
+    const mockUuid = "123456";
+    const mockUser = generateUser(mockUuid);
+    const mockComments = [{ id: "1", postId: "1" }];
 
-    getSpy.mockReturnValue({ data: mockUserResponse });
-    listBySpy.mockReturnValue(mockCommentResponse);
+    const service:UsersService = generateService({
+      user: mockUser,
+      comments: mockComments,
+      uuid: mockUuid,
+    });
 
-    const user = await usersService.getById("1");
+    const user = await service.getById("1");
 
     expect(user).toEqual({
-      ...mockUserResponse,
-      comments: mockCommentResponse,
+      ...mockUser,
+      comments: mockComments,
     });
   });
 });

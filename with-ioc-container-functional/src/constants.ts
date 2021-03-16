@@ -1,10 +1,10 @@
 export const TYPES = {
-  LOGGER: Symbol.for("Logger"),
-  UUID: Symbol.for("uuid"),
-  CLIENT: Symbol.for("Client"),
-  USERS_CONTROLLER: Symbol.for("UsersController"),
-  USERS_SERVICE: Symbol.for("UsersService"),
-  USERS_CLIENT: Symbol.for("UsersClient"),
-  COMMENTS_SERVICE: Symbol.for("CommentsService"),
-  COMMENTS_CLIENT: Symbol.for("CommentsClient"),
+  LOGGER: Symbol("Logger"),
+  UUID: Symbol("uuid"),
+  CLIENT: Symbol("Client"),
+  USERS_CONTROLLER: Symbol("UsersController"),
+  USERS_SERVICE: Symbol("UsersService"),
+  USERS_CLIENT: Symbol("UsersClient"),
+  COMMENTS_SERVICE: Symbol("CommentsService"),
+  COMMENTS_CLIENT: Symbol("CommentsClient"),
 };
