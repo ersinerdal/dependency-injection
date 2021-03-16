@@ -1,3 +1,3 @@
 export { UsersServiceDependencies } from "./UsersServiceDependencies";
-export { User } from "./User";
+export { User, UserWithComments } from "./User";
 export { UsersService } from "./UsersService";

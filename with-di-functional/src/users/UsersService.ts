@@ -1,5 +1,4 @@
-import { UsersServiceDependencies, User, UsersService } from "./types";
-import { UserWithComments } from "./types/User";
+import { UsersServiceDependencies, User, UsersService, UserWithComments } from "./types";
 
 export const usersService = ({
   commentsService,
